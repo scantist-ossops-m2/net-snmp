@@ -3836,17 +3836,6 @@ snmpv3_parse(netsnmp_pdu *pdu,
     return SNMPERR_SUCCESS;
 }                               /* end snmpv3_parse() */
 
-/*
- * This function is here to provide a separate call to
- * free the securityStateRef memory. This is needed to prevent
- * a double free if this memory is freed in snmp_free_pdu.
- */
-void
-snmp_free_securityStateRef(netsnmp_pdu* pdu)
-{
-   free_securityStateRef(pdu);
-}
-
 #define ERROR_STAT_LENGTH 11
 
 int
