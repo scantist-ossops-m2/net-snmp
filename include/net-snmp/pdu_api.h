@@ -15,6 +15,8 @@ netsnmp_pdu    *snmp_pdu_create(int type);
 netsnmp_pdu    *snmp_clone_pdu(netsnmp_pdu *pdu);
 netsnmp_pdu    *snmp_fix_pdu(  netsnmp_pdu *pdu, int idx);
 void            snmp_free_pdu( netsnmp_pdu *pdu);
+NETSNMP_IMPORT
+void            snmp_free_securityStateRef( netsnmp_pdu *pdu);
 
 #ifdef __cplusplus
 }
