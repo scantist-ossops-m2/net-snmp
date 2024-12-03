@@ -1427,6 +1427,13 @@ free_agent_snmp_session(netsnmp_agent_session *asp)
     
     DEBUGMSGTL(("verbose:asp", "asp %p reqinfo %p freed\n",
                 asp, asp->reqinfo));
+
+    /* Clean up securityStateRef here to prevent a double free */
+    if (asp->orig_pdu && asp->orig_pdu->securityStateRef)
+	snmp_free_securityStateRef(asp->orig_pdu);
+    if (asp->pdu && asp->pdu->securityStateRef)
+	snmp_free_securityStateRef(asp->pdu);
+
     if (asp->orig_pdu)
         snmp_free_pdu(asp->orig_pdu);
     if (asp->pdu)
@@ -2629,7 +2636,7 @@ netsnmp_check_requests_status(netsnmp_agent_session *asp,
         if (requests->status != SNMP_ERR_NOERROR &&
             (!look_for_specific || requests->status == look_for_specific)
             && (look_for_specific || asp->index == 0
-                || requests->index < asp->index)) {
+                || requests->index <= asp->index)) {
             asp->index = requests->index;
             asp->status = requests->status;
         }
